@@ -1,6 +1,11 @@
 package com.example.personalfinanceapp.presentation.home
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,7 +30,7 @@ fun HomeScreen(
                 actions = {
                     IconButton(onClick = onLogout) {
                         Icon(
-                            imageVector = androidx.compose.material.icons.Icons.Default.ExitToApp,
+                            imageVector = Icons.Default.ExitToApp,
                             contentDescription = "Выйти"
                         )
                     }
@@ -35,7 +40,7 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(onClick = onAddTransactionClick) {
                 Icon(
-                    imageVector = androidx.compose.material.icons.Icons.Default.Add,
+                    imageVector = Icons.Default.Add,
                     contentDescription = "Добавить транзакцию"
                 )
             }
@@ -103,7 +108,7 @@ fun HomeScreen(
                         onClick = { viewModel.setCurrentPeriod(period) },
                         label = { Text(period) }
                     )
-            }
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -133,8 +138,7 @@ fun HomeScreen(
                 }
             } else {
                 LazyColumn {
-                    items(uiState.categorySums.size) { index ->
-                        val entry = uiState.categorySums.entries.elementAt(index)
+                    items(uiState.categorySums.toList()) { (category, amount) ->
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -146,8 +150,8 @@ fun HomeScreen(
                                     .padding(16.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(entry.key)
-                                Text("${"%.2f".format(entry.value)} ₽")
+                                Text(category)
+                                Text("${"%.2f".format(amount)} ₽")
                             }
                         }
                     }
